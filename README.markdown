@@ -73,7 +73,7 @@ Resolves an object of promises with *all* results, using the same format as Q.al
 
 ### .object.fulfilled
 
-Resolves an object of promises with *only* the successes.  If none of the objects succeeds, it succeeds with an empty object. 
+Resolves an object of promises with *only* the successes.  If none of the promises succeed, it succeeds with an empty object. 
 
 ```javascript
 	qCombinators.object.allSettled({ 
