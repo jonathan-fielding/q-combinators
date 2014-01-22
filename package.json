@@ -1,0 +1,35 @@
+{
+  "name": "node-q-combinators",
+  "version": "0.0.0",
+  "description": "functions to combine (q) promises",
+  "main": "index.js",
+  "private": true,
+  "dependencies": {
+    "q": "~1.0.0",
+    "lodash": "~2.4.1"
+  },
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha test/ --reporter spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zeebox/node-q-combinators"
+  },
+  "keywords": [
+    "q",
+    "promises",
+    "combinators",
+    "util",
+    "utility",
+    "promise",
+    "combine"
+  ],
+  "author": "zeebox",
+  "bugs": {
+    "url": "https://github.com/zeebox/node-q-combinators/issues"
+  },
+  "devDependencies": {
+    "mocha": "~1.17.0",
+    "should": "~3.0.1"
+  }
+}
