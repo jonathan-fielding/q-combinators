@@ -90,6 +90,39 @@ Resolves an object of promises with *only* the successes.  If none of the promis
 	})
 ```
 
+### .fallback
+
+Sequantially executes an array of functions which return promises, until the first promise is resolved. If all promises are rejected it itself is rejected with an array of all the failure reasons.
+
+```javascript
+	
+	// happy path
+	qCombinators.fallback([
+		function() { return Q.reject('foo'); },
+		function() { return Q('bar'); },
+		function() { return Q.reject('baz'); }
+	])
+	.then(function(result){
+		// result is 'bar'
+	});
+
+	// sad path
+	qCombinators.fallback([
+		function() { return Q.reject('foo'); },
+		function() { return Q.reject('bar'); },
+		function() { return Q.reject('baz'); }
+	])
+	.fail(function(results) {
+		// results is:
+		// [
+		//   'foo',
+		//   'bar',
+		//   'baz'
+		// ]
+	});
+
+```
+
 
 ## Contributing
 

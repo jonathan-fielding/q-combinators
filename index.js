@@ -39,6 +39,28 @@ var objectFulfilled = function(objectOfPromises){
 		});
 }
 
+// Array[fn() -> Promise[T]] -> Promise[T]
+var fallback = function(arrayOfPromiseFn) {
+        var deferred = Q.defer();
+	var rejections = [];
+        function tryNextPromise() {
+		if(arrayOfPromiseFn.length > 0) {
+                	var first = arrayOfPromiseFn.shift();
+                	first().then(function(result) {
+                        	deferred.resolve(result);
+                	}, function(reason) {
+				rejections.push(reason);
+                        	tryNextPromise();
+                	});
+		} else {
+			deferred.reject(rejections);
+		}
+        }
+        tryNextPromise();
+        return deferred.promise;
+}
+
 module.exports = { 
-	object: { all: objectAll, allSettled: objectAllSettled, fulfilled: objectFulfilled }
+	object: { all: objectAll, allSettled: objectAllSettled, fulfilled: objectFulfilled },
+	fallback: fallback
 };
