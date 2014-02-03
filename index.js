@@ -32,28 +32,43 @@ var objectFulfilled = function(objectOfPromises){
 		});
 }
 
+// Object[String, Promise] -> Promise[Object]
+var objectRejected = function(objectOfPromises){
+	return objectAllSettled(objectOfPromises)
+		.then(function(o){ 
+			var rejected = _.pick(o, function(res){ return res.state === 'rejected' });
+			return _.mapValues(rejected, function(res){ return res.reason });
+		});
+}
+
 // Array[fn() -> Promise[T]] -> Promise[T]
 var fallback = function(arrayOfPromiseFn) {
-        var deferred = Q.defer();
+    var deferred = Q.defer();
 	var rejections = [];
-        function tryNextPromise() {
+    var tryNextPromise = function() {
 		if(arrayOfPromiseFn.length > 0) {
-                	var first = arrayOfPromiseFn.shift();
-                	first().then(function(result) {
-                        	deferred.resolve(result);
-                	}, function(reason) {
+			var first = arrayOfPromiseFn.shift();
+			first().then(function(result) {
+				deferred.resolve(result);
+			}, function(reason) {
 				rejections.push(reason);
-                        	tryNextPromise();
-                	});
+				tryNextPromise();
+			});
 		} else {
 			deferred.reject(rejections);
 		}
-        }
-        tryNextPromise();
-        return deferred.promise;
+    }
+    tryNextPromise();
+    return deferred.promise;
 }
 
 module.exports = { 
-	object: { all: objectAll, allSettled: objectAllSettled, fulfilled: objectFulfilled },
+	object: { 
+		all: objectAll, 
+		allSettled: objectAllSettled, 
+		fulfilled: objectFulfilled, 
+		rejected: objectRejected 
+	},
 	fallback: fallback
 };
+
