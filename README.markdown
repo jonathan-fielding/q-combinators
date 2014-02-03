@@ -73,10 +73,10 @@ Resolves an object of promises with *all* results, using the same format as Q.al
 
 ### .object.fulfilled
 
-Resolves an object of promises with *only* the successes.  If none of the promises succeed, it succeeds with an empty object. 
+Resolves an object of promises with *only* the fulfilled values.  If none of the promises fulfill, it fulfills with an empty object. 
 
 ```javascript
-	qCombinators.object.allSettled({ 
+	qCombinators.object.fulfilled({ 
 		x: Q.reject('foo'),
 		y: Q('bar'),
 		z: Q('quux')
@@ -86,6 +86,24 @@ Resolves an object of promises with *only* the successes.  If none of the promis
 		// {
 		//   y: 'bar',
 		//   z: 'quux'
+		// }
+	})
+```
+
+### .object.rejected
+
+Resolves an object of promises with *only* the rejected values.  If none of the promises are rejected, it fulfills with an empty object. 
+
+```javascript
+	qCombinators.object.rejected({ 
+		x: Q.reject('foo'),
+		y: Q('bar'),
+		z: Q('quux')
+	})
+	.then(function(object){ 
+		// object is:
+		// {
+		//   x: 'foo'
 		// }
 	})
 ```
