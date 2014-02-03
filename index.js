@@ -36,7 +36,7 @@ var objectFulfilled = function(objectOfPromises){
 var objectRejected = function(objectOfPromises){
 	return objectAllSettled(objectOfPromises)
 		.then(function(o){ 
-			var rejected = filterObject(o, function(res){ return res.state === 'rejected' });
+			var rejected = _.pick(o, function(res){ return res.state === 'rejected' });
 			return _.mapValues(rejected, function(res){ return res.reason });
 		});
 }
