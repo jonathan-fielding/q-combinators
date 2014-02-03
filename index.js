@@ -1,59 +1,30 @@
 var Q = require('q');
-var _ = require('lodash');
 
-// Object[String, Promise] -> Promise[Object]
-var objectAllSettled = function(objectOfPromises){
-	var keys = _.keys(objectOfPromises);
-	var promises = _.values(objectOfPromises);
-
-	return Q.allSettled(promises)
-		.then(function(vals){ 
-			return _.zipObject(keys, vals) ;
-		});
-};
-
-// Object[String, Promise] -> Promise[Object]
-var objectAll = function(objectOfPromises){
-	var keys = _.keys(objectOfPromises);
-	var promises = _.values(objectOfPromises);
-
-	return Q.all(promises)
-		.then(function(vals){ 
-			return _.zipObject(keys, vals) ;
-		});
-};
-
-// Object[String, Promise] -> Promise[Object]
-var objectFulfilled = function(objectOfPromises){
-	return objectAllSettled(objectOfPromises)
-		.then(function(o){ 
-			var fulfilled = _.pick(o, function(res){ return res.state === 'fulfilled' });
-			return _.mapValues(fulfilled, function(res){ return res.value });
-		});
-}
+'use strict';
 
 // Array[fn() -> Promise[T]] -> Promise[T]
 var fallback = function(arrayOfPromiseFn) {
-        var deferred = Q.defer();
+    var deferred = Q.defer();
 	var rejections = [];
-        function tryNextPromise() {
+    var tryNextPromise = function() {
 		if(arrayOfPromiseFn.length > 0) {
-                	var first = arrayOfPromiseFn.shift();
-                	first().then(function(result) {
-                        	deferred.resolve(result);
-                	}, function(reason) {
+			var first = arrayOfPromiseFn.shift();
+			first().then(function(result) {
+				deferred.resolve(result);
+			}, function(reason) {
 				rejections.push(reason);
-                        	tryNextPromise();
-                	});
+				tryNextPromise();
+			});
 		} else {
 			deferred.reject(rejections);
 		}
-        }
-        tryNextPromise();
-        return deferred.promise;
+    }
+    tryNextPromise();
+    return deferred.promise;
 }
 
 module.exports = { 
-	object: { all: objectAll, allSettled: objectAllSettled, fulfilled: objectFulfilled },
+	object: require('./src/object'),
 	fallback: fallback
 };
+
