@@ -17,15 +17,15 @@ Add the following to your package.json dependencies:
 
 ## API
 
-### .series
+### .chain
 
-Sequentially executes an array of promises, passing.  The equivalent of a lot of `.then` chains:
+Sequentially executes an array of promises.  The equivalent of a lot of `.then` chains:
 
 ```
 var inc = function(a){ return a + 1 };
 var promise1 = function(){ return Q(1) };
 
-qCombinators.series([promise1, inc, inc, inc])
+qCombinators.chain([promise1, inc, inc, inc])
 	.then(function(val){ 
 		// val === 4 
 	});

@@ -3,7 +3,7 @@ var Q = require('q');
 'use strict';
 
 // Array[fn() -> Promise[T]] -> Promise[T]
-var series = function(promiseFns){ 
+var chain = function(promiseFns){ 
     return promiseFns.reduce(function(promise, fn){ return promise.then(fn)}, Q());
 }
 
@@ -31,6 +31,5 @@ var fallback = function(promiseFns) {
 module.exports = { 
 	object: require('./src/object'),
 	fallback: fallback,
-    series: series
+    chain: chain
 };
-
