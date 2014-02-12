@@ -4,7 +4,7 @@ var chain = require('../').chain;
 
 require('should');
 
-describe('series', function(){
+describe('chain', function(){
     var inc = function(a){ return a + 1 };
     var promise1 = function(){ return Q(1) };
     var reject1 = function(){ return Q.reject(1) };
