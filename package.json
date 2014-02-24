@@ -1,5 +1,5 @@
 {
-  "name": "node-q-combinators",
+  "name": "q-combinators",
   "version": "0.3.0",
   "description": "functions to combine (q) promises",
   "main": "index.js",
