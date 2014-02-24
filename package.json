@@ -1,6 +1,6 @@
 {
   "name": "q-combinators",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "functions to combine (q) promises",
   "main": "index.js",
   "private": true,
