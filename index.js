@@ -30,6 +30,7 @@ var fallback = function(promiseFns) {
 
 module.exports = { 
 	object: require('./src/object'),
+    array: require('./src/array'),
 	fallback: fallback,
     chain: chain
 };
