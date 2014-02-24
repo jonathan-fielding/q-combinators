@@ -155,6 +155,38 @@ Resolves an object of promises with *only* the rejected values.  If none of the 
 ```
 
 
+### .array.fulfilled
+
+Resolves an array of promises with *only* the fulfilled values.  If none of the promises are fulfilled, it fulfills with an empty array.
+
+```javascript
+    qCombinators.array.fulfilled([
+        Q.reject('foo'),
+        Q('bar'),
+        Q('quux')
+    ])
+    .then(function(value){ 
+        // value is: ['bar', 'quux']
+    })
+```
+
+
+### .array.rejected
+
+Resolves an array of promises with *only* the rejected values.  If none of the promises are rejected, it fulfills with an empty array.
+
+```javascript
+    qCombinators.array.rejected([ 
+        Q.reject('foo'),
+        Q.reject('bar'),
+        Q('quux')
+    ])
+    .then(function(value){ 
+        // value is: ['foo', 'bar']
+    })
+
+```
+
 
 ## Contributing
 
