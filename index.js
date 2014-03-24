@@ -30,29 +30,10 @@ var fallback = function(promiseFns) {
 }
 
 
-var apply = function(fn, args){ return fn.apply(null, args) };
-
-var attempt = function(totalRetryTimes, fn){
-    var allArgs = arguments;
-    var userArgs = _.toArray(arguments).slice(2);
-
-    return Q(apply(fn, userArgs))
-        .fail(function(err){
-            var remainingTries = totalRetryTimes - 1;
-            if ( remainingTries === 0 ) return Q.reject(err);
-            else return apply(attempt, [remainingTries, fn].concat(userArgs));
-        });
-};
-
-// (Number, fn() -> Promise) -> Promise
-var retry = function(totalRetryTimes, fn){
-    return attempt.bind(null, totalRetryTimes, fn);
-}
-
 module.exports = {
 	object: require('./src/object'),
     array: require('./src/array'),
 	fallback: fallback,
     chain: chain,
-    retry: retry
+    retry: require('./src/retry')
 };
