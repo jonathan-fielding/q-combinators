@@ -6,22 +6,22 @@ require('should');
 
 describe('fallback', function(){
 	it('should resolve the when first promise is resolved', function(done) {
-		fallback([ 
+		fallback([
 			function() { return Q.reject('foo') },
 			function() { return Q('bar') }
 		])
-		.then(function(o){ 
+		.then(function(o){
 			o.should.eql('bar');
 		})
 		.then(done, done);
 	});
 
 	it('should reject when all promises are rejected', function(done) {
-		fallback([ 
+		fallback([
 			function() { return Q.reject('foo') },
 			function() { return Q.reject('bar') }
 		])
-		.fail(function(o){ 
+		.fail(function(o){
 			o.should.eql([
 				'foo',
 				'bar'
@@ -40,11 +40,11 @@ describe('fallback', function(){
 			fn2,
 			fn3
 		])
-		.then(function(){ 
+		.then(function(){
 			fn1.called.should.be.true;
 			fn2.called.should.be.true;
 			fn3.called.should.be.false;
-			
+
 		})
 		.then(done, done);
 	});

@@ -3,7 +3,7 @@ var Q = require('q');
 'use strict';
 
 // Array[fn() -> Promise[T]] -> Promise[T]
-var chain = function(promiseFns){ 
+var chain = function(promiseFns){
     return promiseFns.reduce(function(promise, fn){ return promise.then(fn)}, Q());
 }
 
@@ -28,9 +28,24 @@ var fallback = function(promiseFns) {
     return deferred.promise;
 }
 
-module.exports = { 
+
+var fallbackParallelStep = function(accumulatedPromise, nextPromise){
+    return accumulatedPromise.fail(function(errorsSoFar){
+        return nextPromise.fail(function(error) {
+            return Q.reject(errorsSoFar.concat([error]));
+        })
+    });
+}
+
+// Array[Promise[T]] -> Promise[T]
+var fallbackParallel = function(promises){
+    return promises.reduce(fallbackParallelStep, Q.reject([]));
+}
+
+module.exports = {
 	object: require('./src/object'),
     array: require('./src/array'),
+    fallbackParallel: fallbackParallel,
 	fallback: fallback,
     chain: chain
 };
