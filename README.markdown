@@ -174,6 +174,41 @@ qCombinators.object.rejected({
 });
 ```
 
+
+### .object.demand
+
+Resolves an object of promises when the 'demanded' keys are successful.  All other keys are optional, as in `.object.fulfilled`.
+If a demanded key's promise fails, the returned promise also fails with an object of the failures.
+
+```javascript
+// happy path
+qCombinators.object.demand({
+	x: Q('foo'),
+	y: Q.reject('bar'),
+	z: Q('quux')
+})
+.then(function(object){
+	// object is:
+	// {
+	//   x: 'foo',
+	//   z: 'quux'
+	// }
+});
+
+// sad path
+demand(['x', 'y'], {
+	x: Q.reject('foo'),
+	y: Q('bar'),
+	z: Q('quux')
+})
+.fail(function(errs){
+	// errs is:
+	// {
+	//   x: 'foo'
+	// }
+});
+```
+
 ### .array.fulfilled
 
 Resolves an array of promises with *only* the fulfilled values.  If none of the promises are fulfilled, it fulfills with an empty array.
