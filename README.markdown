@@ -1,4 +1,4 @@
-# node-q-combinators
+# q-combinators
 
 Functions to combine q promises, capturing lots of useful, real world patterns used across Beamly's node.js services.
 
