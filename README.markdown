@@ -182,7 +182,7 @@ If a demanded key's promise fails, the returned promise also fails with an objec
 
 ```javascript
 // happy path
-qCombinators.object.demand({
+qCombinators.object.demand(['x'], {
 	x: Q('foo'),
 	y: Q.reject('bar'),
 	z: Q('quux')
