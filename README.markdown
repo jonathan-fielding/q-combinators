@@ -12,7 +12,7 @@ npm install q-combinators --save
 
 ### .chain
 
-Sequentially executes an array of promises.  The equivalent of a lot of `.then` chains:
+Sequentially executes an array of promise-returning functions.  The equivalent of a lot of `.then` chains:
 
 ```javascript
 var inc = function(a){ return a + 1 };
