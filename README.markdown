@@ -10,82 +10,6 @@ npm install q-combinators --save
 
 ## API
 
-### .chain
-
-Sequentially executes an array of promise-returning functions.  The equivalent of a lot of `.then` chains:
-
-```javascript
-var inc = function(a){ return a + 1 };
-var promise1 = function(){ return Q(1) };
-
-qCombinators.chain([promise1, inc, inc, inc])
-	.then(function(val){
-		// val === 4
-	});
-```
-
-### .fallback
-
-Sequentially executes an array of functions which return promises, until the first promise is resolved. If all promises are rejected it itself is rejected with an array of all the failure reasons.
-
-```javascript
-// happy path
-qCombinators.fallback([
-	function() { return Q.reject('foo'); },
-	function() { return Q('bar'); },
-	function() { return Q.reject('baz'); }
-])
-.then(function(result){
-	// result is 'bar'
-});
-
-// sad path
-qCombinators.fallback([
-	function() { return Q.reject('foo'); },
-	function() { return Q.reject('bar'); },
-	function() { return Q.reject('baz'); }
-])
-.fail(function(results) {
-	// results is:
-	// [
-	//   'foo',
-	//   'bar',
-	//   'baz'
-	// ]
-});
-```
-
-### fallbackParallel
-
-Same as .fallback, but takes an array of promises, allowing fetching results in parallel, then accepting them in preferential order.
-
-```javascript
-// happy path
-qCombinators.fallbackParallel([
-	Q.reject('foo'),
-	Q('bar'),
-	Q.reject('baz')
-])
-.then(function(result){
-	// result is 'bar'
-});
-
-// sad path
-qCombinators.fallbackParallel([
-	Q.reject('foo'),
-	Q.reject('bar'),
-	Q.reject('baz')
-])
-.fail(function(results) {
-	// results is:
-	// [
-	//   'foo',
-	//   'bar',
-	//   'baz'
-	// ]
-});
-```
-
 ### .object.all
 
 Resolves an object of promises with an object of the resultant values if all promises resolve.  If any promise rejects, it rejects with the same reason
@@ -240,6 +164,83 @@ qCombinators.array.rejected([
     // value is: ['foo', 'bar']
 });
 ```
+
+### .chain
+
+Sequentially executes an array of promise-returning functions.  The equivalent of a lot of `.then` chains:
+
+```javascript
+var inc = function(a){ return a + 1 };
+var promise1 = function(){ return Q(1) };
+
+qCombinators.chain([promise1, inc, inc, inc])
+	.then(function(val){
+		// val === 4
+	});
+```
+
+### .fallback
+
+Sequentially executes an array of functions which return promises, until the first promise is resolved. If all promises are rejected it itself is rejected with an array of all the failure reasons.
+
+```javascript
+// happy path
+qCombinators.fallback([
+	function() { return Q.reject('foo'); },
+	function() { return Q('bar'); },
+	function() { return Q.reject('baz'); }
+])
+.then(function(result){
+	// result is 'bar'
+});
+
+// sad path
+qCombinators.fallback([
+	function() { return Q.reject('foo'); },
+	function() { return Q.reject('bar'); },
+	function() { return Q.reject('baz'); }
+])
+.fail(function(results) {
+	// results is:
+	// [
+	//   'foo',
+	//   'bar',
+	//   'baz'
+	// ]
+});
+```
+
+### .fallbackParallel
+
+Same as .fallback, but takes an array of promises, allowing fetching results in parallel, then accepting them in preferential order.
+
+```javascript
+// happy path
+qCombinators.fallbackParallel([
+	Q.reject('foo'),
+	Q('bar'),
+	Q.reject('baz')
+])
+.then(function(result){
+	// result is 'bar'
+});
+
+// sad path
+qCombinators.fallbackParallel([
+	Q.reject('foo'),
+	Q.reject('bar'),
+	Q.reject('baz')
+])
+.fail(function(results) {
+	// results is:
+	// [
+	//   'foo',
+	//   'bar',
+	//   'baz'
+	// ]
+});
+```
+
 
 ## Contributing
 
