@@ -177,8 +177,10 @@ qCombinators.object.rejected({
 
 ### .object.demand
 
-Resolves an object of promises when the 'demanded' keys are successful.  All other keys are optional, as in `.object.fulfilled`.
-If a demanded key's promise fails, the returned promise also fails with an object of the failures.
+Resolves an object of promises when the 'demanded' keys contain successful promises.
+
+If a demanded promise fails, the returned promise will also fail.
+
 
 ```javascript
 // happy path
