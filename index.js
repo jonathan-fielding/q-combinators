@@ -5,11 +5,9 @@ var Q = require('q');
 // VarArgs[N -> Promise[N+1]] -> (N -> Promise[N+n])
 var compose = function(){
     var steps = Array.prototype.slice.call(arguments).reverse();
-    return (steps.length == 0)
-      ? Q
-      : steps.reduce(function(accFn,promiseFn){
+    return steps.reduce(function(accFn,promiseFn){
         return function(input){ return accFn(input).then(promiseFn) }
-      });
+    },Q);
 }
 
 // Array[fn() -> Promise[T]] -> Promise[T]

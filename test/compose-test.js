@@ -23,4 +23,21 @@ describe('compose', function(){
             })
             .then(done, done);
     });
+
+    it('should apply a single argument', function(done){
+        (compose(inc)(1))
+            .then(function(val){ 
+                val.should.eql(2);
+            })
+            .then(done, done);
+    });
+
+    it('should effectively lift when given no arguments', function(done){
+        (compose()(1))
+            .then(function(val){ 
+                val.should.eql(1);
+            })
+            .then(done, done);
+    });
+    
 });
