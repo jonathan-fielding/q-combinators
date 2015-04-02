@@ -196,7 +196,7 @@ doubleThenAddTwo(5)
 	.then(function(val){
 		// val === 12
 	});
-
+```
 
 ### .fallback
 
