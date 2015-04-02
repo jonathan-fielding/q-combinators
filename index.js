@@ -2,6 +2,16 @@ var Q = require('q');
 
 'use strict';
 
+// VarArgs[N -> Promise[N+1]] -> (N -> Promise[N+n])
+var compose = function(){
+    var steps = Array.prototype.slice.call(arguments).reverse();
+    return (steps.length == 0)
+      ? Q
+      : steps.reduce(function(accFn,promiseFn){
+        return function(input){ return accFn(input).then(promiseFn) }
+      });
+}
+
 // Array[fn() -> Promise[T]] -> Promise[T]
 var chain = function(promiseFns){
     return promiseFns.reduce(function(promise, fn){ return promise.then(fn)}, Q());
@@ -47,5 +57,6 @@ module.exports = {
     array: require('./src/array'),
     fallbackParallel: fallbackParallel,
 	fallback: fallback,
-    chain: chain
+    chain: chain,
+    compose: compose
 };
