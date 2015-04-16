@@ -179,6 +179,25 @@ qCombinators.chain([promise1, inc, inc, inc])
 	});
 ```
 
+### .compose
+
+Composes promise-producing functions into a single promise-producing function. Composes conventionally, from right to left.
+
+In case of failure, returns the first failing promise in order of execution.
+
+
+```javascript
+var incP = function(a){ return Q(a + 1) };
+var doubleP = function(a){ return Q(a * 2) };
+
+var doubleThenAddTwo = qCombinators.compose(inc, inc, double);
+
+doubleThenAddTwo(5)
+	.then(function(val){
+		// val === 12
+	});
+```
+
 ### .fallback
 
 Sequentially executes an array of functions which return promises, until the first promise is resolved. If all promises are rejected it itself is rejected with an array of all the failure reasons.
