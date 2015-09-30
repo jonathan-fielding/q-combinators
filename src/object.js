@@ -15,14 +15,25 @@ var allSettled = function(objectOfPromises){
 };
 
 // Object[String, Promise] -> Promise[Object]
-var all = function(objectOfPromises){
+var all = function(obj){
+    var objectOfPromises = _.mapValues(obj, function(value, key){
+        if (isPromise(value)) {
+            return value;
+        }
+        else if(_.isObject(value)) {
+            return all(value);
+        }
+        else {
+            return Q.resolve(value);
+        }
+    });
+
     var keys = _.keys(objectOfPromises);
     var promises = _.values(objectOfPromises);
 
-    return Q.all(promises)
-        .then(function(vals){
-            return _.zipObject(keys, vals) ;
-        });
+    return Q.all(promises).then(function(vals){
+        return _.zipObject(keys, vals) ;
+    });
 };
 
 // Object[String, Promise] -> Promise[Object]
@@ -55,6 +66,11 @@ var demand = function(keys, objectOfPromises){
             else return objectOfPromises;
         });
 }
+
+function isPromise (v) {
+    return v && typeof v === 'object' && typeof v.then === 'function'
+}
+
 
 module.exports = {
     all: all,
